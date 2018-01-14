@@ -105,4 +105,27 @@ class SandTimerView(ctx:Context):View(ctx) {
             }
         }
     }
+    class Renderer(var view:SandTimerView,var time:Int = 0) {
+        val animator = Animator(view)
+        var sandTimer:SandTimer?=null
+        fun render(canvas:Canvas,paint:Paint) {
+            if(time == 0) {
+                val w = canvas.width.toFloat()
+                val h = canvas.height.toFloat()
+                sandTimer = SandTimer(w/2,h/2,Math.min(w,h)/5)
+            }
+            sandTimer?.draw(canvas,paint)
+            time++
+            animator.animate {
+                sandTimer?.update {
+                    animator.stop()
+                }
+            }
+        }
+        fun handleTap() {
+            sandTimer?.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
