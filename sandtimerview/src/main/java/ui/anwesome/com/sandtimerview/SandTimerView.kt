@@ -28,6 +28,7 @@ class SandTimerView(ctx:Context):View(ctx) {
             canvas.save()
             canvas.translate(x,y)
             canvas.rotate(180f*state.scales[0])
+            paint.color = Color.parseColor("#2196F3")
             for(i in 0..1) {
                 canvas.save()
                 canvas.scale(1f,1f-2*i)
@@ -45,8 +46,8 @@ class SandTimerView(ctx:Context):View(ctx) {
                 val sf = 1-scale + i*(2*scale - 1)
                 val path2 = Path()
                 path2.moveTo(0f,0f)
-                path2.lineTo(-size/2, size/2*sf)
-                path2.lineTo(size/2, size/2*sf)
+                path2.lineTo(-size/2*sf, size/2*sf)
+                path2.lineTo(size/2*sf, size/2*sf)
                 path2.lineTo(0f,0f)
                 canvas.drawPath(path2,paint)
                 canvas.restore()
@@ -73,6 +74,7 @@ class SandTimerView(ctx:Context):View(ctx) {
                     }
                     dir = 0
                     stopcb()
+                    j = 0
                 }
             }
         }
