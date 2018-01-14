@@ -47,11 +47,34 @@ class SandTimerView(ctx:Context):View(ctx) {
             }
             canvas.restore()
         }
-        fun update(stopcb:(Float)->Unit) {
+        fun update(stopcb:()->Unit) {
 
         }
         fun startUpdating(startcb:()->Unit) {
 
+        }
+    }
+    data class SandTimerState(var j:Int = 0,var dir:Int = 0) {
+        var scales:Array<Float> = arrayOf(0f,0f)
+        fun update(stopcb:()->Unit) {
+            scales[j]+=0.1f
+            if(scales[j] > 1) {
+                scales[j] = 1f
+                j++
+                if(j == scales.size) {
+                    for(i in 0..scales.size-1) {
+                        scales[i] = 0f
+                    }
+                    dir = 0
+                    stopcb()
+                }
+            }
+        }
+        fun startUpdating(startcb:()->Unit) {
+            if(dir == 0) {
+                dir = 1
+                startcb()
+            }
         }
     }
 }
