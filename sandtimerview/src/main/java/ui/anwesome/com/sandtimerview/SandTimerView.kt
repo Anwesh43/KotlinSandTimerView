@@ -20,10 +20,11 @@ class SandTimerView(ctx:Context):View(ctx) {
         return true
     }
     data class SandTimer(var x:Float,var y:Float,var size:Float) {
+        val state = SandTimerState()
         fun draw(canvas:Canvas,paint:Paint) {
             canvas.save()
             canvas.translate(x,y)
-            canvas.rotate(180f)
+            canvas.rotate(180f*state.scales[0])
             for(i in 0..1) {
                 canvas.save()
                 canvas.scale(1f,1f-2*i)
@@ -37,10 +38,12 @@ class SandTimerView(ctx:Context):View(ctx) {
                 path.lineTo(0f,0f)
                 canvas.drawPath(path,paint)
                 paint.style = Paint.Style.FILL
+                val scale = state.scales[1]
+                val sf = 1-scale + i*(2*scale - 1)
                 val path2 = Path()
                 path2.moveTo(0f,0f)
-                path2.lineTo(-size/2, size/2)
-                path2.lineTo(size/2, size/2)
+                path2.lineTo(-size/2, size/2*sf)
+                path2.lineTo(size/2, size/2*sf)
                 path2.lineTo(0f,0f)
                 canvas.drawPath(path2,paint)
                 canvas.restore()
@@ -48,10 +51,10 @@ class SandTimerView(ctx:Context):View(ctx) {
             canvas.restore()
         }
         fun update(stopcb:()->Unit) {
-
+            state.update(stopcb)
         }
         fun startUpdating(startcb:()->Unit) {
-
+            state.startUpdating(startcb)
         }
     }
     data class SandTimerState(var j:Int = 0,var dir:Int = 0) {
