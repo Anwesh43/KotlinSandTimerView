@@ -3,18 +3,21 @@ package ui.anwesome.com.sandtimerview
 /**
  * Created by anweshmishra on 15/01/18.
  */
+import android.app.Activity
 import android.view.*
 import android.graphics.*
 import android.content.*
 class SandTimerView(ctx:Context):View(ctx) {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    val renderer = Renderer(this)
     override fun onDraw(canvas:Canvas) {
-
+        canvas.drawColor(Color.parseColor("#212121"))
+        renderer.render(canvas,paint)
     }
     override fun onTouchEvent(event:MotionEvent):Boolean {
         when(event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
@@ -126,6 +129,13 @@ class SandTimerView(ctx:Context):View(ctx) {
             sandTimer?.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity:Activity):SandTimerView {
+            val view = SandTimerView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
